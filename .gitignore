@@ -1,1 +1,20 @@
+# ── Dependencies (never push node_modules) ──────────────
+node_modules/
+client/node_modules/
+server/node_modules/
 
+# ── Environment files (keeps your secrets safe) ──────────
+.env
+client/.env
+server/.env
+
+# ── React build output ────────────────────────────────────
+client/build/
+
+# ── Logs ─────────────────────────────────────────────────
+*.log
+npm-debug.log*
+
+# ── OS files ─────────────────────────────────────────────
+.DS_Store
+Thumbs.db
