@@ -23,4 +23,5 @@ app.use('/api/auth', authRoutes);
 app.get('/', (req, res) => res.json({ message: '✅ Campus Auth Server Running' }));
 
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
+// TO THIS:
+app.listen(PORT, '0.0.0.0', () => console.log(`🚀 Server running on http://localhost:${PORT}`));
