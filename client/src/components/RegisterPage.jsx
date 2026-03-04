@@ -12,56 +12,104 @@ export default function RegisterPage() {
   const navigate  = useNavigate();
 
   const handleSubmit = async () => {
-    if (!form.name || !form.email) return setError('Name and email are required');
+    if (!form.name || !form.email) return setError('All fields are required');
     setLoading(true); setError('');
     try {
       const { data } = await registerUser(form);
       login(data.token, data.user);
-      navigate('/dashboard'); // go to dashboard after register
+      navigate('/dashboard');
     } catch (err) {
       setError(err.response?.data?.error || 'Registration failed');
     } finally { setLoading(false); }
   };
 
+  const roles = [
+    { value: 'student', label: 'Student',  icon: '🎓' },
+    { value: 'faculty', label: 'Faculty',  icon: '👨‍🏫' },
+    { value: 'admin',   label: 'Admin',    icon: '⚙️' },
+  ];
+
   return (
-    <div style={s.page}>
-      <div style={s.card}>
-        <div style={{ fontSize: 48 }}>🎓</div>
-        <h2 style={s.title}>Create Account</h2>
-        <p style={s.sub}>No password — ever</p>
+    <div style={r.page}>
+      <div style={r.card}>
+        {/* Header */}
+        <div style={r.header}>
+          <div style={r.logoBox}>🎓</div>
+          <div>
+            <h2 style={r.title}>Create Account</h2>
+            <p style={r.sub}>Join your campus — no password required</p>
+          </div>
+        </div>
 
-        <input style={s.input} placeholder="Full Name"
+        <div style={r.divider} />
+
+        {/* Name */}
+        <label style={r.label}>FULL NAME</label>
+        <input style={r.input} placeholder="e.g. Kundan Vangapandu"
           value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
-        <input style={s.input} type="email" placeholder="University Email"
+
+        {/* Email */}
+        <label style={r.label}>UNIVERSITY EMAIL</label>
+        <input style={r.input} type="email" placeholder="student@university.edu"
           value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} />
-        <select style={s.input} value={form.role}
-          onChange={e => setForm({ ...form, role: e.target.value })}>
-          <option value="student">Student</option>
-          <option value="faculty">Faculty</option>
-          <option value="admin">Admin</option>
-        </select>
 
-        {error && <p style={s.error}>⚠️ {error}</p>}
+        {/* Role */}
+        <label style={r.label}>ROLE</label>
+        <div style={r.roleGrid}>
+          {roles.map(role => (
+            <button key={role.value}
+              onClick={() => setForm({ ...form, role: role.value })}
+              style={{ ...r.roleBtn, ...(form.role === role.value ? r.roleBtnActive : {}) }}>
+              <div style={{ fontSize: 22 }}>{role.icon}</div>
+              <div style={{ fontSize: 13, fontWeight: 600 }}>{role.label}</div>
+            </button>
+          ))}
+        </div>
 
-        <button style={s.btn} onClick={handleSubmit} disabled={loading}>
-          {loading ? '⏳ Creating...' : '🚀 Create Account'}
+        {error && (
+          <div style={r.errorBox}>
+            <span>⚠️</span> {error}
+          </div>
+        )}
+
+        <button style={r.btn} onClick={handleSubmit} disabled={loading}>
+          {loading ? '⏳ Creating Account...' : '🚀 Create Account'}
         </button>
 
-        <p style={s.footer}>
-          Already have an account? <Link to="/login" style={{ color: '#6366f1', fontWeight: 600 }}>Login</Link>
+        {/* Info box */}
+        <div style={r.infoBox}>
+          <p style={{ color: '#64748b', fontSize: 12, lineHeight: 1.8 }}>
+            🔑 After registering, set up biometric or OTP from your dashboard<br />
+            🛡️ Your account is protected — no password ever stored
+          </p>
+        </div>
+
+        <p style={r.footer}>
+          Already have an account?{' '}
+          <Link to="/login" style={{ color: '#3b82f6', fontWeight: 600, textDecoration: 'none' }}>
+            Sign In →
+          </Link>
         </p>
       </div>
     </div>
   );
 }
 
-const s = {
-  page:  { minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', padding: 16 },
-  card:  { background: '#fff', borderRadius: 20, padding: '36px 32px', width: '100%', maxWidth: 420, boxShadow: '0 20px 60px rgba(0,0,0,0.2)', textAlign: 'center' },
-  title: { fontSize: 26, fontWeight: 800, margin: '8px 0 4px' },
-  sub:   { color: '#888', marginBottom: 24, fontSize: 14 },
-  input: { width: '100%', padding: '12px 16px', border: '2px solid #e5e7eb', borderRadius: 10, fontSize: 15, marginBottom: 12, outline: 'none', display: 'block' },
-  error: { color: '#ef4444', fontSize: 13, marginBottom: 12, background: '#fef2f2', padding: '8px 12px', borderRadius: 8 },
-  btn:   { width: '100%', padding: 14, background: '#6366f1', color: '#fff', border: 'none', borderRadius: 12, fontSize: 16, fontWeight: 700, cursor: 'pointer', marginBottom: 16 },
-  footer:{ fontSize: 13, color: '#888' },
+const r = {
+  page:          { minHeight: '100vh', background: '#0a0e1a', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 },
+  card:          { width: '100%', maxWidth: 480, background: '#0f172a', border: '1px solid #1e2d45', borderRadius: 20, padding: '40px 40px' },
+  header:        { display: 'flex', alignItems: 'center', gap: 16, marginBottom: 24 },
+  logoBox:       { fontSize: 40, width: 64, height: 64, background: 'rgba(59,130,246,0.1)', borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 },
+  title:         { fontSize: 22, fontWeight: 800, color: '#f0f9ff' },
+  sub:           { fontSize: 13, color: '#64748b', marginTop: 4 },
+  divider:       { height: 1, background: '#1e2d45', marginBottom: 24 },
+  label:         { display: 'block', fontSize: 10, fontWeight: 700, letterSpacing: 1.5, color: '#4a5568', marginBottom: 8 },
+  input:         { width: '100%', padding: '13px 16px', border: '1px solid #1e2d45', borderRadius: 10, fontSize: 15, marginBottom: 20, background: '#0a0e1a', color: '#e2e8f0', display: 'block' },
+  roleGrid:      { display: 'flex', gap: 10, marginBottom: 20 },
+  roleBtn:       { flex: 1, padding: '14px 8px', border: '1px solid #1e2d45', borderRadius: 12, background: '#0a0e1a', cursor: 'pointer', textAlign: 'center', color: '#64748b', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 },
+  roleBtnActive: { border: '1px solid #3b82f6', background: 'rgba(59,130,246,0.08)', color: '#93c5fd' },
+  errorBox:      { background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', color: '#fca5a5', borderRadius: 10, padding: '10px 14px', fontSize: 13, marginBottom: 16, display: 'flex', gap: 8 },
+  btn:           { width: '100%', padding: 14, background: 'linear-gradient(135deg, #2563eb, #3b82f6)', color: '#fff', border: 'none', borderRadius: 12, fontSize: 15, fontWeight: 700, cursor: 'pointer', marginBottom: 16 },
+  infoBox:       { background: 'rgba(15,23,42,0.8)', border: '1px solid #1e2d45', borderRadius: 10, padding: '12px 16px', marginBottom: 20 },
+  footer:        { textAlign: 'center', fontSize: 13, color: '#4a5568' },
 };
