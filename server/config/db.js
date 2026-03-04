@@ -2,11 +2,13 @@ const mongoose = require('mongoose');
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI);
+    await mongoose.connect(process.env.MONGO_URI, {
+      serverSelectionTimeoutMS: 30000,
+      socketTimeoutMS: 45000,
+      family: 4,
+    });
     console.log('✅ MongoDB Connected');
   } catch (error) {
-    // If MongoDB is not running, server will crash here
-    // Make sure MongoDB service is running on your PC
     console.error('❌ MongoDB Error:', error.message);
     process.exit(1);
   }
