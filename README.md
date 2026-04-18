@@ -28,7 +28,7 @@ npm install
 npm start
 ```
 
-VIDEO DEMO 
+VIDEO DEMO 👇
 
 https://drive.google.com/file/d/1Xi9Aeteku7f3ks_zzYF3TD3a9goRSNtk/view?usp=sharing
 
