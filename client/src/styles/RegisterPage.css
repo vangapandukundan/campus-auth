@@ -1,0 +1,196 @@
+/* ─── Claymorphism Register Page ─── */
+.register-clay-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e0e5ec; /* Warm/cool light grey base for claymorphism */
+  font-family: 'Outfit', 'Inter', system-ui, sans-serif;
+  padding: 40px 20px;
+  color: #4a5568;
+}
+
+.clay-card {
+  background: #e0e5ec;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 36px;
+  padding: 48px 40px;
+  /* Claymorphism shadows: outer drop, inner light top-left, inner dark bottom-right */
+  box-shadow: 
+    20px 20px 40px #bec3c9, 
+    -20px -20px 40px #ffffff,
+    inset 4px 4px 10px rgba(255, 255, 255, 0.5),
+    inset -4px -4px 10px rgba(0, 0, 0, 0.05);
+  animation: slideInSoft 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes slideInSoft {
+  from { opacity: 0; transform: translateY(40px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.clay-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.clay-icon-wrap {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  background: #e0e5ec;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  /* Inset clay style for the icon background */
+  box-shadow: 
+    inset 6px 6px 12px #bec3c9,
+    inset -6px -6px 12px #ffffff;
+}
+
+.clay-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #2d3748;
+  margin: 0 0 8px;
+  letter-spacing: -0.5px;
+}
+
+.clay-subtitle {
+  font-size: 15px;
+  color: #718096;
+  margin: 0;
+}
+
+.clay-form-group {
+  margin-bottom: 24px;
+}
+
+.clay-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #4a5568;
+  margin-bottom: 12px;
+  padding-left: 8px;
+}
+
+.clay-input {
+  width: 100%;
+  padding: 18px 20px;
+  background: #e0e5ec;
+  border: none;
+  border-radius: 20px;
+  font-size: 15px;
+  color: #2d3748;
+  /* Deep inset shadow to make it look carved out of clay */
+  box-shadow: 
+    inset 6px 6px 12px #bec3c9,
+    inset -6px -6px 12px #ffffff;
+  transition: all 0.2s ease;
+}
+
+.clay-input:focus {
+  outline: none;
+  /* Reverse to out-set when focused / glow */
+  box-shadow: 
+    6px 6px 12px #bec3c9,
+    -6px -6px 12px #ffffff,
+    0 0 0 4px rgba(66, 153, 225, 0.15);
+}
+
+/* Role Selector */
+.clay-role-grid {
+  display: flex;
+  gap: 16px;
+}
+
+.clay-role-btn {
+  flex: 1;
+  padding: 16px 8px;
+  background: #e0e5ec;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: #718096;
+  font-weight: 600;
+  box-shadow: 
+    8px 8px 16px #bec3c9, 
+    -8px -8px 16px #ffffff;
+  transition: all 0.2s;
+}
+
+.clay-role-btn:hover {
+  transform: translateY(-2px);
+}
+
+.clay-role-btn.active {
+  color: #3182ce;
+  /* Pressed clay effect */
+  box-shadow: 
+    inset 6px 6px 12px #bec3c9,
+    inset -6px -6px 12px #ffffff;
+}
+
+.clay-role-emoji {
+  font-size: 24px;
+}
+
+.clay-submit-btn {
+  width: 100%;
+  padding: 20px;
+  background: #4299e1; /* Vivid blue */
+  color: white;
+  border: none;
+  border-radius: 24px;
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+  margin-top: 16px;
+  margin-bottom: 24px;
+  /* Colored clay effect */
+  box-shadow: 
+    10px 10px 20px #bec3c9, 
+    -10px -10px 20px #ffffff,
+    inset 4px 4px 10px rgba(255, 255, 255, 0.4),
+    inset -4px -4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+}
+
+.clay-submit-btn:hover {
+  transform: translateY(-2px);
+  background: #3182ce;
+}
+
+.clay-submit-btn:active {
+  transform: translateY(2px);
+  box-shadow: 
+    inset 6px 6px 12px rgba(0, 0, 0, 0.2),
+    inset -6px -6px 12px rgba(255, 255, 255, 0.2);
+}
+
+.clay-footer {
+  text-align: center;
+  font-weight: 600;
+}
+
+.clay-link {
+  color: #3182ce;
+  text-decoration: none;
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+
+.clay-link:hover {
+  background: rgba(49, 130, 206, 0.1);
+}
+
+/* Google Font for specific Claymorphism fun typography */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap');
