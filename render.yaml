@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: campus-auth-backend
+    runtime: node
+    buildCommand: npm install
+    startCommand: node server/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        scope: all
+      - key: CLIENT_URL
+        scope: all
+      - key: RP_ID
+        scope: all
+      - key: JWT_SECRET
+        scope: all
