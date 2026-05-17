@@ -27,5 +27,6 @@ cd client
 npm install
 npm start
 ```
+Video Demo
 
-Open http://localhost:3000
+https://drive.google.com/file/d/18F4Ruanr3IfFe77EiiX7thIK6s9OVSrX/view
