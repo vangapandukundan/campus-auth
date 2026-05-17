@@ -12,6 +12,7 @@ export default function LoginPage() {
   const [method,   setMethod]   = useState('biometric');
   const [code,     setCode]     = useState('');
   const [step,     setStep]     = useState('email');
+  const [demoCode, setDemoCode] = useState('');
   const [error,    setError]    = useState('');
   const [loading,  setLoading]  = useState(false);
   const [success,  setSuccess]  = useState(false);
@@ -24,7 +25,7 @@ export default function LoginPage() {
 
   const switchMethod = (m) => {
     setMethod(m); setStep('email');
-    setCode(''); setError('');
+    setCode(''); setError(''); setDemoCode('');
     setShowFaceCapture(false); setFaceData(null);
   };
 
@@ -58,7 +59,8 @@ export default function LoginPage() {
         setShowFaceCapture(true);
       } else if (method === 'push') {
         if (step === 'email') {
-          await pushSend(email);
+          const res = await pushSend(email);
+          setDemoCode(res.data.demoCode || '');
           setStep('code');
         } else {
           const { data } = await pushVerify(email, code);
@@ -169,6 +171,22 @@ export default function LoginPage() {
                   autoFocus
                   style={{ textAlign: 'center', letterSpacing: '8px', fontSize: '20px', fontWeight: '800' }}
                 />
+                {/* Show the generated push code so user can enter it */}
+                {demoCode && (
+                  <div style={{
+                    background: 'linear-gradient(135deg, #e0e5ec, #eef2f7)',
+                    borderRadius: 16,
+                    padding: '16px',
+                    marginTop: 20,
+                    marginBottom: 4,
+                    textAlign: 'center',
+                    boxShadow: 'inset 4px 4px 10px #bec3c9, inset -4px -4px 10px #ffffff',
+                  }}>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: '#718096', letterSpacing: 2, marginBottom: 8 }}>YOUR PUSH CODE</div>
+                    <div style={{ fontSize: 32, fontWeight: 900, letterSpacing: 10, color: '#3182ce', fontFamily: 'monospace' }}>{demoCode}</div>
+                    <div style={{ fontSize: 11, color: '#a0aec0', marginTop: 6 }}>Copy this code into the field above</div>
+                  </div>
+                )}
                 <div style={{ textAlign: 'center' }}>
                   <button 
                     onClick={() => setStep('email')} 

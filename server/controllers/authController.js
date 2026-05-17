@@ -229,10 +229,11 @@ exports.pushSend = async (req, res) => {
     pushCodes.set(email, { code, exp: Date.now() + 2 * 60 * 1000 }); // 2 min expiry
 
     // NOTE: In production, send via Firebase using user.fcmToken
-    // For demo/hackathon: code is returned directly in response
+    // For demo/hackathon: code is returned so user can enter it in the UI
+    // In production with Firebase, remove demoCode and send via push notification instead
     console.log(`[DEMO] Push code for ${email}: ${code}`);
 
-    res.json({ sent: true }); // code is only logged server-side, never sent to client
+    res.json({ sent: true, demoCode: code });
   } catch (err) { res.status(400).json({ error: err.message }); }
 };
 
