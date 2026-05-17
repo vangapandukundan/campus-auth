@@ -36,9 +36,12 @@ exports.webAuthnRegisterStart = async (req, res) => {
   try {
     const user = req.user;
 
+    const requestOrigin = req.headers.origin || origin;
+    const requestRPID   = new URL(requestOrigin).hostname;
+
     const options = await generateRegistrationOptions({
       rpName,
-      rpID,
+      rpID: requestRPID,
       userID:          user._id.toString(),
       userName:        user.email,
       userDisplayName: user.name,
@@ -71,11 +74,14 @@ exports.webAuthnRegisterFinish = async (req, res) => {
     if (!user.challenge || new Date() > user.challengeExp)
       return res.status(400).json({ error: 'Challenge expired. Please try again.' });
 
+    const requestOrigin = req.headers.origin || origin;
+    const requestRPID   = new URL(requestOrigin).hostname;
+
     const verification = await verifyRegistrationResponse({
       response:          req.body,
       expectedChallenge: user.challenge,
-      expectedOrigin:    origin,
-      expectedRPID:      rpID,
+      expectedOrigin:    requestOrigin,
+      expectedRPID:      requestRPID,
     });
 
     if (!verification.verified)
@@ -111,9 +117,12 @@ exports.webAuthnLoginStart = async (req, res) => {
     if (!user.credentials.length)
       return res.status(400).json({ error: 'No biometric registered. Please register first.' });
 
+    const requestOrigin = req.headers.origin || origin;
+    const requestRPID   = new URL(requestOrigin).hostname;
+
     // Generate options WITHOUT allowCredentials first
     const options = await generateAuthenticationOptions({
-      rpID,
+      rpID: requestRPID,
       userVerification: 'preferred',
       timeout: 60000,
     });
@@ -147,11 +156,14 @@ exports.webAuthnLoginFinish = async (req, res) => {
     const dbCred = user.credentials.find(c => c.credentialID === response.id);
     if (!dbCred) return res.status(400).json({ error: 'Credential not found' });
 
+    const requestOrigin = req.headers.origin || origin;
+    const requestRPID   = new URL(requestOrigin).hostname;
+
     const verification = await verifyAuthenticationResponse({
       response,
       expectedChallenge: user.challenge,
-      expectedOrigin:    origin,
-      expectedRPID:      rpID,
+      expectedOrigin:    requestOrigin,
+      expectedRPID:      requestRPID,
       authenticator: {
         credentialID:        Buffer.from(dbCred.credentialID, 'base64url'),
         credentialPublicKey: Buffer.from(dbCred.credentialPublicKey, 'base64url'),
